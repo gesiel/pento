@@ -38,6 +38,25 @@ defmodule Pento.Survey do
   def get_demographic!(id), do: Repo.get!(Demographic, id)
 
   @doc """
+  Gets a user's demographic information.
+
+  Returns null if Demographic does not exist.
+
+  ## Examples
+
+      iex> get_demographic_by_user(user)
+      %Demographic{}
+
+      iex> get_demographic_by_user(user_without_demographic)
+      null
+
+  """
+  def get_demographic_by_user(user) do
+    Demographic.Query.for_user(user)
+    |> Repo.one()
+  end
+
+  @doc """
   Creates a demographic.
 
   ## Examples
