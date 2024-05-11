@@ -59,7 +59,8 @@ defmodule Pento.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.2"},
-      {:phoenix_html_helpers, "~> 1.0"}
+      {:phoenix_html_helpers, "~> 1.0"},
+      {:contex, "~> 0.4.0"}
     ]
   end
 
