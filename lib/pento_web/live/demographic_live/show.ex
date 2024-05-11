@@ -4,8 +4,6 @@ defmodule PentoWeb.DemographicLive.Show do
   import Phoenix.HTML
   use PhoenixHTMLHelpers
 
-  alias PentoWeb.CoreComponents
-
   def details(assigns) do
     ~H"""
     <div>
