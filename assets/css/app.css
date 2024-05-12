@@ -100,13 +100,11 @@
   margin-top: 30px;
   margin-bottom: 30px;
 }
-.user-activity-component h2,
-h3 {
+.user-activity-component h2 h3 {
   background: rebeccapurple;
   color: white;
   padding: 10px;
 }
-.user-activity-component ul,
-p {
+.user-activity-component ul p {
   padding-left: 20px;
 }

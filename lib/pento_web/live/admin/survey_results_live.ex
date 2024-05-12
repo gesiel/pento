@@ -7,10 +7,48 @@ defmodule PentoWeb.Admin.SurveyResultsLive do
     {:ok,
      socket
      |> assign(assigns)
+     |> assign_age_group_filter("all")
+     |> assign_gender_filter("all")
      |> assign_products_with_average_ratings()
      |> assign_dataset()
      |> assign_chart()
      |> assign_chart_svg()}
+  end
+
+  def handle_event(
+        "gender_filter",
+        %{"gender_filter" => gender_filter},
+        socket
+      ) do
+    {:noreply,
+     socket
+     |> assign_gender_filter(gender_filter)
+     |> assign_products_with_average_ratings()
+     |> assign_dataset()
+     |> assign_chart()
+     |> assign_chart_svg()}
+  end
+
+  def handle_event(
+        "age_group_filter",
+        %{"age_group_filter" => age_group_filter},
+        socket
+      ) do
+    {:noreply,
+     socket
+     |> assign_age_group_filter(age_group_filter)
+     |> assign_products_with_average_ratings()
+     |> assign_dataset()
+     |> assign_chart()
+     |> assign_chart_svg()}
+  end
+
+  def assign_age_group_filter(socket, age_group_filter) do
+    assign(socket, :age_group_filter, age_group_filter)
+  end
+
+  def assign_gender_filter(socket, gender_filter) do
+    assign(socket, :gender_filter, gender_filter)
   end
 
   defp assign_dataset(
@@ -27,12 +65,28 @@ defmodule PentoWeb.Admin.SurveyResultsLive do
     )
   end
 
-  defp assign_products_with_average_ratings(socket) do
+  defp assign_products_with_average_ratings(
+         %{assigns: %{age_group_filter: age_group_filter, gender_filter: gender_filter}} =
+           socket
+       ) do
     socket
     |> assign(
       :products_with_average_ratings,
-      Catalog.products_with_average_ratings()
+      get_products_with_average_ratings(%{
+        age_group_filter: age_group_filter,
+        gender_filter: gender_filter
+      })
     )
+  end
+
+  defp get_products_with_average_ratings(filter) do
+    case Catalog.products_with_average_ratings(filter) do
+      [] ->
+        Catalog.products_with_zero_ratings()
+
+      products ->
+        products
+    end
   end
 
   defp assign_chart(%{assigns: %{dataset: dataset}} = socket) do
